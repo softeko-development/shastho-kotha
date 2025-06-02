@@ -1,0 +1,419 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block head_title%}
+<title>{{heading}} | TelMed</title>
+{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'assets/css/create-prescription.css'%}" rel="stylesheet" type="text/css" />
+<link href="{% static 'assets/css/scrollbar.css'%}" rel="stylesheet" type="text/css" />
+<link href="{% static 'assets/css/vendors/jui/jquery-ui.min.css' %}" rel="stylesheet" type="text/css" />
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-5-theme/1.3.0/select2-bootstrap-5-theme.min.css'>
+<style>
+    .btn-circle {
+        width: 45px;
+        height: 45px;
+        padding: 0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .btn-circle i {
+        font-size: 1.2rem; /* Adjust the font size as needed */
+    }
+    
+    .btn-circle-sm {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+
+    .form-control, .form-select{
+        font-weight:700;
+        padding-left:2px;
+    }
+
+    .form-control-sm{
+        padding:0rem 0.3rem!important;
+    }
+
+    .material-icons{
+        font-size:18px;
+    }
+
+    .form-select {
+        background-position:right 0.2rem center!important;
+        background-image:None;
+        background-size:10px 7px !important;
+        padding:2px;
+    }
+
+    
+
+    
+
+    
+
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Create Prescription</h2>
+        </div>
+        <div>
+            <!-- problem -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between">
+                        
+                        <div class="pharmacy_patient">
+                           
+                            <form>
+                                <div class="d-flex align-items-center gap-2" >
+                                    <div class="">
+                                        <input type="text" placeholder="Name" class="form-control" id="patient_name" />
+                                    </div>
+                                    <div class="">
+                                        <input style="max-width: 100px;" type="text" placeholder="Age" class="form-control" id="patient_age" />
+                                    </div>
+                                    <div class="d-flex gap-1 ">
+                                        <label class="form-check ">
+                                            <input class="form-check-input" type="radio" name="gender" value="male" />
+                                            <span class="form-check-label"> Male </span>
+                                        </label>
+                                        <label class="form-check ">
+                                            <input class="form-check-input" type="radio" name="gender" value="female" />
+                                            <span class="form-check-label"> Female </span>
+                                        </label>
+                                        <label class="form-check ">
+                                            <input class="form-check-input" type="radio" name="gender" value="others" />
+                                            <span class="form-check-label"> Others </span>
+                                        </label>
+                                    </div>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <!-- problem -->
+            <div class="row">
+                <div class="col-md-12">
+                    <form>
+                        <div class="mb-4">
+                            <label for="problem" class="form-label">Chief Complaint</label>
+                            <input type="text" name="problem" placeholder="Problem" class="form-control" id="problem" />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <div style="display: flex; align-items: center; margin-bottom: 6px; gap: 5px;">
+                                        <input type="checkbox" name="haveMedHistory" id="haveMedHistory" />
+                                        <label style="margin-bottom: 0;" for="haveMedHistory" class="form-label">Medicines History</label>
+                                    </div>                            
+                                    <input style="display: none;" type="text" name="history" placeholder="Medicines History" class="form-control" id="midicine_history" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <div style="display: flex; align-items: center; margin-bottom: 6px; gap: 5px;">
+                                        <input type="checkbox" name="haveMedHistory" id="haveRiskFactor" />
+                                        <label style="margin-bottom: 0;" for="haveRiskFactor" class="form-label">Risk Factor</label>
+                                    </div>                            
+                                    <input style="display: none;" type="text" name="history" placeholder="Risk Factor" class="form-control" id="risk_factor" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                    </form>
+                </div>
+            </div>
+
+            <!-- add medicine -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="mb-3">Add Medicine</h5>
+                    <form class="pr-5 row gx-3 gy-2 align-items-end" id="add_medicine_form">
+                        <div class="col-md-2 position-relative medicine_name_wrapper">
+                            <label for="med_search" class="form-label">Medicine Name</label>
+                            <input type="text" name="med_search" class="form-control form-control-sm form-control-solid" id="med_search" placeholder="Search by Name" required>
+                            <input type="hidden" id="med_full_name">
+                            <input type="hidden" id="med_name" />
+                            <input type="hidden" id="med_strength" />
+                            <input type="hidden" id="med_dosage_form" />
+                            <i id="medicine_name_clear" class="icon material-icons md-close position-absolute" style="right: 8px; top: 40px; color: rgb(255, 129, 129); cursor: pointer;"></i>
+                            <p class="medicine_name_error error"></p>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label">Dosages</label>
+                            <select id="medicine_dosage" class="form-select">
+                                <option value="0">-----</option>
+                                <option>1+0+0</option>
+                                <option>0+1+0</option>
+                                <option>0+0+1</option>
+                                <option>1+1+0</option>
+                                <option>0+1+1</option>
+                                <option>1+0+1</option>
+                                <option>1+1+1</option>
+                                <option>1+1+1+1</option>
+                            </select>
+                            <p class="dosage_error error"></p>
+                        </div>
+                        <div class="col-md-2 position-relative medicine_name_wrapper">
+                            <label for="dosage_instruction" class="form-label">Dosage Instruction</label>
+                            <input type="text" class="form-control form-control-sm form-control-solid" id="dosage_instruction" placeholder="Dosage Instruction" required>
+                            <p class="medicine_name_error error"></p>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label">Select Meal</label>
+                            <select id="medicine_meal_instruction" class="form-select">
+                                <option value="0">-----</option>
+                                <option value="before_meal">Before Meal</option>
+                                <option value="after_meal">After Meal</option>
+                            </select>
+                            <p class="meal_error error"></p>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="medicine_duration" class="form-label">Duration</label>
+                            <div class="input-group">
+                                <input type="number" placeholder="-----" class="form-control" id="medicine_duration" aria-label="Duration" />
+                                <select id="medicine_duration_unit" class="form-select">
+                                    <option value="0">-----</option>
+                                    <option value="days">days</option>
+                                    <option value="weeks">week</option>
+                                    <option value="months">month</option>
+                                    <option value="years">year</option>
+                                    <option value="continue">continue</option>
+                                </select>
+                            </div>
+                            <p class="duration_error error"></p>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="med_search" class="form-label">Instruction</label>
+                            <input type="text" class="form-control form-control-sm form-control-solid" id="med_search" placeholder="Search by Name" required>
+                            <p class="medicine_name_error error"></p>
+                        </div>
+                        <div class="col-md-1">
+                            <button id="add_medicine_form_submit_btn" class="btn btn-success btn-circle btn-circle-sm m-1">
+                                <i class="material-icons md-add"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="mb-3">Added Medicine List</h5>
+                    <div class="position-relative">
+                        <div class="overflow-auto scrollbar-primary border rounded">
+                            <div id="medicine_lists" class="table-responsive pl-10">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Medicine Name</th>
+                                            <th>Dosages</th>
+                                            <th>Meal Instruction</th>
+                                            <th>Condition</th>
+                                            <th>Duration</th>
+                                            <th class="text-end pr-30">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="added_medicines">
+                                        
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- advice -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <h5 class="mb-3">Advice</h5>
+                            <form>
+                                <div class="mb-4">
+                                    <input type="text" name="advice" placeholder="Advice" class="form-control" id="advice" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- investigation -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Add Investigation</h5>
+                            <form>
+                                <div class="mb-4 ">
+                                    
+                                 <input type="text" name="test_search" class="form-control form-control-sm form-control-solid w-100" id="test_search" placeholder="Search by Name">
+                                 <div class="mb-4" id="added_tests_container">
+                                    <!-- Dynamic list of added tests will be appended here -->
+                                 </div>
+                                
+                                 <input type="hidden" name="selected_tests" id="selected_tests" />  
+
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Follow Up</h5>
+                            <div class="input-group">
+                                <input type="number" placeholder="Follow Up" class="form-control" id="follow_up_duration" aria-label="Follow Up" />
+                                <select id="follow_up_unit" class="form-select">
+                                    <option value="days">days</option>
+                                    <option value="weeks">week</option>
+                                    <option value="months">month</option>
+                                    <option value="years">year</option>
+                                </select>
+                            </div>
+                            <p class="follow_up_error error"></p>
+                        </div>
+                        
+                    </div>
+
+                    <!-- additional requirements -->
+                    <div class="row">
+                        
+                    </div>
+
+                    <div class="row">
+                        <div class="d-grid">
+                            <button type="button" id="submit_prescription_btn" class="btn btn-primary text-center justify-content-center">Create Prescription</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+            <!-- .row // -->
+        </div>
+        <!-- card body .// -->
+    </div>
+    <!-- card .// -->
+</section>
+
+{% endblock %}
+
+{% block extra_javascript %}
+
+<script src="{%static 'assets/js/create-prescription.js' %}"></script>
+<script src="{% static 'assets/js/vendors/jui/jquery-ui.min.js'%}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    
+        var bodyElement = document.querySelector('body');
+        bodyElement.classList.add('aside-mini');
+    
+    
+    $(function() {
+        // Autocomplete for medicine_search input
+        $("#med_search").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "",
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 1,
+            select: function(event, ui) {
+                $("#med_search").val(ui.item.value);
+                $("#med_full_name").val(ui.item.label);
+                $("#med_name").val(ui.item.name);
+                $("#med_strength").val(ui.item.strength);
+                $("#med_dosage_form").val(ui.item.dosage_form);
+                return false;
+            }
+        });
+    
+        $("#add_medicine_form_submit_btn").click(function() {
+            var fullName = $("#med_full_name").val();
+            $("#med_search").val(fullName);
+        });
+    
+        // Autocomplete for test_search input
+        $("#test_search").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "",
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 1,
+            select: function(event, ui) {
+                if (!selectedTests.includes(ui.item.value)) {
+                    selectedTests.push(ui.item.value);
+                    updateAddedTestsContainer();
+                }
+                $("#test_search").val('');
+                return false;
+            }
+        });
+    
+        // Function to update the added tests container
+        function updateAddedTestsContainer() {
+            var container = $("#added_tests_container");
+            container.empty();
+    
+            selectedTests.forEach(function(test) {
+                var testElement = $("<span>").addClass("badge bg-primary m-1").text(test);
+                var removeBtn = $("<button>").attr("type", "button").addClass("btn-close btn-close-white ms-2").attr("aria-label", "Close");
+    
+                removeBtn.click(function() {
+                    selectedTests = selectedTests.filter(function(item) {
+                        return item !== test;
+                    });
+                    updateAddedTestsContainer();
+                });
+    
+                testElement.append(removeBtn);
+                container.append(testElement);
+            });
+    
+            $("#selected_tests").val(selectedTests.join(','));
+        }
+    
+        $('#medicine_conditional_instruction').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        });
+    });
+    
+</script>
+
+{% endblock extra_javascript %}

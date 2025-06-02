@@ -1,0 +1,146 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% load widget_tweaks %} 
+{% block head_title%}
+    <title>{{heading}} | TelMed</title>
+{% endblock %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">{{heading}} Registration</h2>
+            <p>Lorem ipsum dolor sit amet.</p>
+        </div>
+        <div class="d-flex gap-1">
+            <a class="btn btn-secondary d-none d-sm-block"  href="/static/doc/staff_sample.xlsx" download>Sample Download</a>
+            <a href="#" class="btn btn-danger d-none d-sm-block" data-bs-toggle="modal" data-bs-target="#modalCenter" >
+            Bulk Registration
+            </a>
+  
+            <a
+            href="{% url 'pharmacy_list' %}"
+            class="btn btn-warning"
+            >
+            Pharmacy List
+            </a>
+        </div>
+       
+    </div>
+    <div class="card mb-4">
+        
+        <!-- card-header end// -->
+        <div class="card-body">
+            
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+            
+                  
+            
+                    <!-- User Registration Fields -->
+                    <div class="row mt-3">
+                      <div class="col-md-6 form-group">
+                        <label for="{{ form.avatar.id_for_label }}">Avatar:</label>
+                        {{ form.avatar|add_class:"form-control" }}
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <label class="required-field  text-danger" for="{{ form.phone_number.id_for_label }}"
+                          >Phone Number:</label
+                        >
+                        {{ form.phone_number|add_class:"form-control"|attr:"required" }}
+                      </div>
+                    </div>
+            
+                    <div class="row mt-3">
+                      <div class="col-md-6 form-group">
+                        <label class="required-field  text-danger" for="{{ form.name.id_for_label }}">Name:</label>
+                        {{ form.name|add_class:"form-control"|attr:"required" }}
+                      </div>
+                      <div class="col-md-6 form-group">
+                        <label for="{{ form.email.id_for_label }}">Email:</label>
+                        {{ form.email|add_class:"form-control" }}
+                      </div>
+                    </div>
+            
+                    
+                    <div class="row mt-3">
+                      <div class="col-md-6 form-group">
+                        <label class="required-field  text-danger" for="{{ form.user_id.id_for_label }}"
+                          >Shop ID Number:</label
+                        >
+                        {{ form.user_id|add_class:"form-control"|attr:"required" }}
+                      </div>
+
+                      <div class="col-md-6 form-group">
+                        <label class="required-field" for="{{ form.cirtification.id_for_label }}"
+                          >Certification:</label
+                        >
+                        {{ profile_form.cirtification|add_class:"form-control"}}
+                      </div>
+                    </div>
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-6 form-group">
+                            <label for="{{ profile_form.post.id_for_label }}"
+                                >Post Office:</label
+                            >
+                            {{ profile_form.post|add_class:"form-control" }}
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                        <label class="required-field " for="{{ form.thana_or_upazila.id_for_label }}"
+                            >Thana / Upazila:</label
+                        >
+                        {{ profile_form.thana_or_upazila|add_class:"form-control" }}
+                        </div>
+            
+                    </div>
+
+                    <div class="row mt-3">
+                      
+                      <div class="col-md-6 form-group">
+                        <label for="{{ profile_form.district.id_for_label }}"
+                          >District:</label
+                        >
+                        {{ profile_form.district|add_class:"form-control" }}
+                      </div>
+
+                      <div class="col-md-6 form-group">
+                        <label for="{{ profile_form.division.id_for_label }}"
+                          >Division:</label
+                        >
+                        {{ profile_form.division|add_class:"form-control" }}
+                      </div>
+
+                    </div>
+                    
+            
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                      <strong>Error:</strong> Please correct the following errors.
+                      <ul>
+                        {% for field in form %} {% if field.errors %}
+                        <li>{{ field.label }}: {{ field.errors|join:", " }}</li>
+                        {% endif %} {% endfor %}
+                      </ul>
+                    </div>
+                    {% endif %}
+            
+                    <button type="submit" class="btn btn-primary my-4">Submit</button>
+                  </form>
+           
+        </div>
+        <!-- card-body end// -->
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_javascript %}
+    
+    <script src="{%static 'assets/js/vendors/chart.js'%}"></script>
+    <script src="{%static 'assets/js/custom-chart.js'%}" type="text/javascript"></script>
+{% endblock extra_javascript %}

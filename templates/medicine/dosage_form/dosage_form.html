@@ -1,0 +1,128 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block head_title%}
+<title>{{heading}} | TelMed</title>
+{% endblock %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">{{heading}} List</h2>
+            
+        </div>
+        <div>
+            <a href="#" class="btn btn-light rounded font-md">Export</a>
+            <a href="#" class="btn btn-light rounded font-md">Import</a>
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewDosageModal" class="btn btn-primary btn-sm rounded">Create new</a>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <input type="text" placeholder="Search..." class="form-control" />
+                </div>
+                <!-- <div class="col-lg-2 col-md-3 col-6">
+                    <select class="form-select">
+                        <option>Status</option>
+                        <option>Active</option>
+                        <option>Disabled</option>
+                        <option>Show all</option>
+                    </select>
+                </div> -->
+                <div class="col-lg-2 col-md-3 col-6">
+                    <select class="form-select">
+                        <option>Show 20</option>
+                        <option>Show 30</option>
+                        <option>Show 40</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+        <!-- card-header end// -->
+        <div class="card-body" id="dosage_container">
+            <!-- <article class="itemlist">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
+                        <div class="info">
+                            <h6 class="mb-0">Seeds of Change Organic Quinoa</h6>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-2 col-4 col-action text-end d-flex gap-3 mr-10">
+                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i>
+                            Edit </a>
+                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i
+                                class="material-icons md-delete_forever"></i> Delete </a>
+                    </div>
+                </div>
+            </article> -->
+        </div>
+        <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+    <!-- <div class="pagination-area mt-30 mb-50">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-start">
+                <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                <li class="page-item"><a class="page-link" href="#">02</a></li>
+                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                <li class="page-item"><a class="page-link" href="#">16</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div> -->
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="viewDosageModal" tabindex="-1" aria-labelledby="viewDosageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewDosageModalLabel">Add New Dosage</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="hideEditModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-4">
+                    <label for="dosage_name" class="form-label">Dosage Name</label>
+                    <input type="text" placeholder="Dosage Name" class="form-control" id="dosage_name" />
+                    <p class="dosage_name_error error" style="color: red;"></p>
+                </div>          
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="hideEditModal()">Close</button>
+                <button onclick="dosageSubmitHandler()" type="button" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- toast -->
+ <div class="toast-container position-fixed bottom-0 end-0 p-3" >
+    <div id="liveDosageToast" class="toast" data-bs-delay="1000" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto">Update</strong>
+        <button type="button" class="btn-close" data-bs-ddelay="1000"  data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        Hello, world! This is a toast message.
+      </div>
+    </div>
+    
+  </div>
+{% endblock %}
+
+{% block extra_javascript %}
+
+<script src="{%static 'assets/js/vendors/chart.js'%}"></script>
+<script src="{%static 'assets/js/custom-chart.js'%}" type="text/javascript"></script>
+<script src="{%static 'assets/js/medicine/dosage.js'%}"></script>
+{% endblock extra_javascript %}

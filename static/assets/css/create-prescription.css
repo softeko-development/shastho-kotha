@@ -1,0 +1,304 @@
+.dark .content-header ul li{
+  background-color: #383e50 !important;
+}
+
+.dark .caller-details h3{
+  color: #4f5d77 !important;
+}
+/* search result */
+.search_result {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 0 6px 2px #e8e8e8;
+    width: 98%;
+    border-radius: 3px;
+    top: 72px;
+    left: 1px;
+    max-height: 172px;
+    overflow: auto;
+    display: none;
+    z-index: 10;
+  }
+  
+.search_result.active {
+  display: block;
+}
+.report_search_result{
+  width: 100%;
+  max-height: 150px;
+  top: 40px;
+}
+.report_search_result.active {
+  display: block;
+}
+  .search_result ul li {
+    padding: 13px 11px;
+    border-bottom: 1px solid gainsboro;
+    line-height: 11px;
+    cursor: pointer;
+  }
+  
+  .search_result ul li:hover {
+    background-color: rgb(3, 190, 87);
+    color: white;
+  }
+
+
+  /* add investigation */
+  .investigation_input_wrap{
+    padding-left: 50px;
+  }
+  #add_investigation_btn{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 14px 20px;
+  }
+
+/*  */
+p.error{
+  color: red;
+}
+
+
+  /* toggle active */
+  
+  .toggle_active .input {
+    visibility: hidden;
+  }
+  .toggle_active .label {
+    background-color: #f42424;
+    height: 25px;
+    width: 50px;
+    position: absolute;
+    border-radius: 20px;
+    cursor: pointer;
+    left: -35px;
+    top: -8px;
+  }
+  .toggle_active .circle {
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: toggleOff 0.3s linear forwards;
+  }
+  
+  .toggle_active .input:checked + .label {
+    background-color: rgb(3, 190, 87);
+  }
+  
+  .toggle_active .input:checked + .label .circle {
+    background-color: white;
+    animation: toggleOn 0.3s linear forwards;
+  }
+  
+  /* video stream */
+  
+#video-streams{
+  width: 300px;
+  height: 250px;
+  position: fixed;
+  top: 100px;
+  right: 25px;
+  z-index: 100;
+  background-color: black;
+  border-radius: 10px;
+
+}
+#video-streams2{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 200;
+  display: flex;
+}
+.video-container{
+  height: 100%;
+  width: 100%;
+  /* border: 5px solid black; */
+  border-radius: 5px;
+}
+
+
+#video-streams2 .video-container{
+  width: 70px;
+  height: 70px;
+  /* border: 5px solid black; */
+  border-radius: 5px;
+}
+.video-player{
+  height: 100%;
+  width: 100%;
+}
+  @keyframes toggleOn {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(25px);
+    }
+  }
+  @keyframes toggleOff {
+    0% {
+      transform: translateX(25px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  
+
+
+
+  /* calling popup css */
+
+  
+#callPopup__wrapper .call-screen {
+  background-color: white;
+  margin: 50px auto;
+  width: 400px;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.2);
+}
+
+#callPopup__wrapper .call-header {
+  width: 100%;
+  height: 40px;
+  padding: 5px 15px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03), 0 10px 40px rgba(0, 0, 0, 0.09);
+  display: table;
+}
+
+@keyframes calling {
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+@keyframes calling2 {
+  0% {
+    box-shadow: 0px 0px 0px 0px rgba(62, 149, 255, 0.09);
+  }
+  50% {
+    box-shadow: 0px 0px 0px 5px rgba(62, 149, 255, 0.2);
+  }
+  100% {
+    box-shadow: 0px 0px 0px 15px rgba(62, 149, 255, 0.5);
+  }
+}
+#callPopup__wrapper .caller-id span {
+  animation-name: calling;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+#callPopup__wrapper .caller-id span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+#callPopup__wrapper .caller-id span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+#callPopup__wrapper .caller-id, #callPopup__wrapper .caller-time {
+  display: table-cell;
+}
+
+#callPopup__wrapper .caller-id {
+  width: 50%;
+}
+
+#callPopup__wrapper .caller-time {
+  width: 40%;
+  text-align: right;
+}
+
+#callPopup__wrapper .caller-img {
+  width: 150px;
+  border-radius: 50%;
+  height: 150px;
+  overflow: hidden;
+  margin: 9% auto;
+  border: 1px solid rbga(0, 0, 0, 0.1);
+  animation: calling2 0.8s ease-in-out infinite alternate;
+}
+
+#callPopup__wrapper .caller-img img {
+  width: 100%;
+}
+
+#callPopup__wrapper .caller-details {
+  width: 100%;
+  margin-top: -25px;
+  text-align: center;
+}
+
+#callPopup__wrapper .caller-details p {
+  margin-top: -15px;
+}
+
+#callPopup__wrapper .caller-control {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
+}
+
+#callPopup__wrapper .call-icon {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  color: black;
+  height: 50px;
+  width: 50px;
+  margin-left: 50px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
+  transition: 0.5s ease-in-out;
+}
+
+#callPopup__wrapper .call-icon:hover {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.33), 0 10px 40px rgba(0, 0, 0, 0.39);
+  transition: 0.5s ease-in-out;
+}
+
+#callPopup__wrapper .call-drop {
+  color: red;
+}
+
+#callPopup__wrapper .agent-search-dialog {
+  padding: 10px 20px;
+  display: none;
+}
+
+#callPopup__wrapper label {
+  display: block;
+  margin: -80px 20px;
+  font-size: 10px;
+  text-align: left;
+}
+
+#callPopup__wrapper input {
+  display: block;
+  height: 40px;
+  width: 330px;
+  font-size: 18px;
+  padding: 0 10px;
+  margin: 15px auto;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+}

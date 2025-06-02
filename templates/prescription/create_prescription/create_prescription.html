@@ -1,0 +1,887 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block head_title%}
+<title>{{heading}} | TelMed</title>
+{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'assets/css/create-prescription.css'%}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="{% static 'assets/css/scrollbar.css'%}" rel="stylesheet" type="text/css" />
+<link href="{% static 'assets/css/vendors/jui/jquery-ui.min.css' %}" rel="stylesheet" type="text/css" />
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css'>
+<link rel='stylesheet'
+    href='https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-5-theme/1.3.0/select2-bootstrap-5-theme.min.css'>
+<style>
+    .btn-circle {
+        width: 45px;
+        height: 45px;
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-circle i {
+        font-size: 1.2rem;
+        /* Adjust the font size as needed */
+    }
+
+    .btn-circle-sm {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+
+    .form-control,
+    .form-select {
+        font-weight: 700;
+        padding-left: 2px;
+    }
+
+    .form-control-sm {
+        padding: 0rem 0.3rem !important;
+    }
+
+    .material-icons {
+        font-size: 18px;
+    }
+
+    .form-select {
+        background-position: right 0.2rem center !important;
+        background-image: None;
+        background-size: 10px 7px !important;
+        padding: 2px;
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<script>
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();  // Prevent the default action
+        }
+    });
+</script>
+<section class="content-main">
+    <div class="content-header">
+
+        <div class="row" style="width: 100%;">
+            <div style="border-right: 1px dashed gainsboro;" class="col-sm-4 col-12">
+                <div style="background-color: rgba(220, 220, 220, 0.1);"
+                    class="d-flex  rounded py-2 mb-2 justify-content-between align-items-center">
+                    <h6 id="patient_id" class="">Patient Details</h6>
+                    <p id="pharmacy_id" class="mb-1" style="font-size: 13px;"></p>
+                </div>
+
+                <form>
+                    <div class="">
+                        <div class="mb-1">
+                            <label for="patient_name" class="form-label">Patient Name</label>
+                            <input type="text" placeholder="Name" class="form-control" id="patient_name" />
+                        </div>
+                        <div class="mb-1">
+                            <label for="patient_age" class="form-label">Patient Age</label>
+                            <input type="number" placeholder="Age" class="form-control" id="patient_age" />
+                        </div>
+                        <div class="mb-1">
+                            <div>
+                                <label for="patient_gender" class="form-label">Patient Gender</label>
+                            </div>
+                            <div class="d-flex  gap-2">
+                                <label class="form-check ">
+                                    <input class="form-check-input" type="radio" name="gender" value="male" />
+                                    <span class="form-check-label"> Male </span>
+                                </label>
+                                <label class="form-check">
+                                    <input class="form-check-input" type="radio" name="gender" value="female" />
+                                    <span class="form-check-label"> Female </span>
+                                </label>
+                                <label class="form-check ">
+                                    <input class="form-check-input" type="radio" name="gender" value="others" />
+                                    <span class="form-check-label"> Others </span>
+                                </label>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div style="border-right: 1px dashed gainsboro;" class="col-sm-4 col-12">
+                <h6 class=" py-2 mb-2 rounded" style="background-color: rgba(220, 220, 220, 0.1);">Patient Queue
+                </h6>
+
+                <audio id="notify_bg_audio">
+                    <source src="{%static 'media/notify.mp3'%}" type="audio/mp3">
+                </audio>
+
+                <ul id="scheduled_patients_wrapper_id" style="max-height: 250px; overflow: auto;"
+                    class="scrollbar-primary">
+                    {% if call_records %}
+                    {% for record in call_records %}
+
+                    <li data-callingId="{{record.data.id}}" style="border-radius: 4px;"
+                        class="py-2 d-flex justify-content-between me-3 shadow-sm px-2 mb-2 bg-white">
+                        <span>{{ record.ppno }}</span>
+
+                        <!-- <button class="border-0 bg-danger rounded text-white reject_call_button" data-bs-toggle="modal"
+                            data-bs-target="#rejectionModal" data-voicecallid="{{record.id}}">
+                            Reject
+                        </button> -->
+
+                        <button
+                            onclick='joinStream("{{ record.channel_name }}", "{{ record.token }}","{{record.group}}", "{{record.user}}", "{{record.ppno}}", "{{record.id}}")'
+                            type="button" data-ph-u="{{ record.user}}" data-call-id="{{ record.id}}"
+                            class="border-0 bg-success rounded text-white accept_call_button">
+                            Accept
+                        </button>
+
+                    </li>
+                    {% endfor %}
+                    {% endif %}
+                </ul>
+
+
+            </div>
+
+            <div class="col-sm-4 col-12">
+                <!-- <h6 class="py-2 mb-2 rounded" style="background-color: rgba(220, 220, 220, 0.1);">Reports
+                </h6>
+                <ul id="scheduled_patients_wrapper_id" style="max-height: 250px; overflow: auto;"
+                    class="scrollbar-primary">
+
+                    <li style="border-radius: 4px;" class="py-2 d-flex justify-content-between me-3 shadow-sm px-2 mb-2 bg-white">
+                        <span>Blood Report</span>
+                        <button data-bs-toggle="modal" data-bs-target="#viewReportModal" type="button"
+                            class="border-0 bg-success rounded text-white">
+                            View
+                        </button>
+                    </li>
+                    <li style="border-radius: 4px;" class="py-2 d-flex justify-content-between me-3 shadow-sm px-2 mb-2 bg-white">
+                        <span>Blood Report</span>
+                        <button data-bs-toggle="modal" data-bs-target="#viewReportModal2" type="button"
+                            class="border-0 bg-success rounded text-white">
+                            View
+                        </button>
+                    </li>
+
+                </ul> -->
+                <!-- video box -->
+                <div id="video-streams" class="grabbable" style="display: none;">
+                    <div class="video__options__wrapper position-relative">
+                        <div id="stream-controls"
+                            class="video__options position-absolute d-flex align-items-center justify-content-center gap-2"
+                            style="top: 190px; left: 0px; width: 100%; z-index: 300;">
+                            <button id="camera-btn"
+                                class="border-0 rounded-circle bg-white d-flex justify-content-center align-items-center"
+                                style="width: 40px; height: 40px;"><i
+                                    class="material-icons md-videocam text-body"></i></button>
+                            <button id="mic-btn"
+                                class="border-0 rounded-circle bg-white d-flex justify-content-center align-items-center"
+                                style="width: 40px; height: 40px;"><i
+                                    class="material-icons md-volume_up text-body"></i></button>
+                            <button id="leave-btn"
+                                class="border-0 rounded-circle bg-white d-flex justify-content-center align-items-center"
+                                style="width: 40px; height: 40px;"><i
+                                    class="material-icons md-call text-danger"></i></button>
+                        </div>
+
+                        <div id="video-streams2"></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <!-- problem -->
+            <div class="row">
+                <div class="col-md-12">
+                    <form>
+                        <div class="mb-4">
+                            <label for="problem" class="form-label">Chief Complaint</label>
+                            <input type="text" name="problem" placeholder="Complaint" class="form-control"
+                                id="problem" />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <div style="display: flex; align-items: center; margin-bottom: 6px; gap: 5px;">
+                                        <input type="checkbox" name="haveMedHistory" id="haveMedHistory" />
+                                        <label style="margin-bottom: 0;" for="haveMedHistory"
+                                            class="form-label">Medicines History</label>
+                                    </div>
+                                    <input style="display: none;" type="text" name="history"
+                                        placeholder="Medicines History" class="form-control" id="midicine_history" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <div style="display: flex; align-items: center; margin-bottom: 6px; gap: 5px;">
+                                        <input type="checkbox" name="haveMedHistory" id="haveRiskFactor" />
+                                        <label style="margin-bottom: 0;" for="haveRiskFactor" class="form-label">Risk
+                                            Factor</label>
+                                    </div>
+                                    <input style="display: none;" type="text" name="history" placeholder="Risk Factor"
+                                        class="form-control" id="risk_factor" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+
+            <!-- add medicine -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="mb-3">Add Medicine</h5>
+                    <form class="pr-5 row gx-3 gy-2 align-items-end" id="add_medicine_form">
+                        <div class="col-md-2 position-relative medicine_name_wrapper">
+
+                            <label for="med_search" class="form-label">Medicine Name</label>
+                            <input type="text" name="med_search"
+                                class="form-control form-control-sm form-control-solid w-100" id="med_search"
+                                placeholder="Search by Name" required>
+                            <input type="hidden" id="med_full_name">
+                            <input type="hidden" id="med_name" />
+                            <input type="hidden" id="med_strength" />
+                            <input type="hidden" id="med_dosage_form" />
+
+                            <i id="medicine_name_clear" class="icon material-icons md-close position-absolute"
+                                style="right: 8px; top: 40px; color: rgb(255, 129, 129); cursor: pointer;"></i>
+                            <p class="medicine_name_error error"></p>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label">Dosages</label>
+                            <select id="medicine_dosage" class="form-select">
+                                <option value="0">-----</option>
+                                <option>1+0+0</option>
+                                <option>0+1+0</option>
+                                <option>0+0+1</option>
+                                <option>1+1+0</option>
+                                <option>0+1+1</option>
+                                <option>1+0+1</option>
+                                <option>1+1+1</option>
+                                <option>2+2+2</option>
+                                <option>1+1+1+1</option>
+                                <option>2+2+2+2</option>
+                            </select>
+                            <p class="dosage_error error"></p>
+                        </div>
+                        <div class="col-md-2 position-relative medicine_name_wrapper">
+                            <label for="dosage_instruction" class="form-label">Dosage Instruction</label>
+                            <input type="text" class="form-control form-control-sm form-control-solid"
+                                id="dosage_instruction" placeholder="Dosage Instruction" required>
+                            <i id="dosage_instr_clear" class="icon material-icons md-close position-absolute"
+                                style="right: 10px; top: 40px; color: rgb(255, 129, 129); cursor: pointer;"></i>
+                            <p class="dosage_error error"></p>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="form-label">Select Meal</label>
+                            <select id="medicine_meal_instruction" class="form-select">
+                                <option value="0">-----</option>
+                                <option value="Before Meal">Before Meal</option>
+                                <option value="After Meal">After Meal</option>
+                                <option value="No Meal Instruction">No Meal Instruction</option>
+                            </select>
+                            <p class="meal_error error"></p>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="medicine_duration" class="form-label">Duration</label>
+                            <div class="input-group">
+                                <input type="number" placeholder="-----" class="form-control" id="medicine_duration"
+                                    aria-label="Duration" />
+                                <select id="medicine_duration_unit" class="form-select" disabled>
+                                    <option value="0">-----</option>
+                                    <option value="days">days</option>
+                                    <option value="weeks">week</option>
+                                    <option value="months">month</option>
+                                    <option value="years">year</option>
+                                    <option value="continue">continue</option>
+                                </select>
+                            </div>
+                            <p class="duration_error error"></p>
+                        </div>
+                        <div class="col-md-2 position-relative">
+                            <label for="instruction" class="form-label">Instruction</label>
+                            <input type="text" class="form-control form-control-sm form-control-solid" id="instruction"
+                                placeholder="Search by Name" required>
+                            <i id="instruction_clear" class="icon material-icons md-close position-absolute"
+                                style="right: 10px; top: 40px; color: rgb(255, 129, 129); cursor: pointer;"></i>
+                            <p class="medicine_name_error error"></p>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="d-flex align-items-center">
+                                <span id="add_medicine_form_clear_btn"
+                                    class="btn btn-danger btn-circle btn-circle-sm m-1">
+                                    <i class="material-icons md-close"></i>
+                                </span>
+                                <button id="add_medicine_form_submit_btn"
+                                    class="btn btn-success btn-circle btn-circle-sm m-1">
+                                    <i class="material-icons md-add"></i>
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="mb-3">Added Medicine List</h5>
+                    <div class="position-relative">
+                        <div class="overflow-auto scrollbar-primary border rounded">
+                            <div id="medicine_lists" class="table-responsive pl-10">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Medicine Name</th>
+                                            <th>Dosages</th>
+                                            <th>Dosages Instruction</th>
+                                            <th>Meal Instruction</th>
+                                            <th>Condition</th>
+                                            <th>Duration</th>
+                                            <th class="text-end pr-30">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="added_medicines">
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- advice -->
+                    <div class="row mt-4">
+                        <div class="col-md-12 position-relative">
+                            <h5 class="mb-2">Advice</h5>
+                            <form>
+                                <div class="mb-4 position-relative">
+                                    <textarea id="advice" class="form-control" name="advice" placeholder="Advice"
+                                        rows="2" style="min-height: auto;"></textarea>
+                                    <i id="advice_clear" class="icon material-icons md-close position-absolute"
+                                        style="right: 10px; top: 10px; color: rgb(255, 129, 129); cursor: pointer;"></i>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- investigation -->
+                    <div class="row">
+                        <div class="col-md-6 position-relative">
+                            <h5 class="mb-2">Add Investigation</h5>
+                            <form>
+                                <div class="mb-4 ">
+
+                                    <input type="text" name="test_search"
+                                        class="form-control form-control-sm form-control-solid w-100" id="test_search"
+                                        placeholder="Search by Name">
+                                    <i id="test_search_clear" class="icon material-icons md-close position-absolute"
+                                        style="right: 10px; top: 40px; color: rgb(255, 129, 129); cursor: pointer;"></i>
+                                    <div class="mb-4" id="added_tests_container">
+                                        <!-- Dynamic list of added tests will be appended here -->
+                                    </div>
+
+                                    <input type="hidden" name="selected_tests" id="selected_tests" />
+
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-2">Follow Up</h5>
+                            <div class="input-group">
+                                <input type="number" placeholder="Follow Up" class="form-control"
+                                    id="follow_up_duration" aria-label="Follow Up" />
+                                <select id="follow_up_unit" class="form-select" disabled>
+                                    <option value="0">-----</option>
+                                    <option value="days">days</option>
+                                    <option value="weeks">week</option>
+                                    <option value="months">month</option>
+                                    <option value="years">year</option>
+                                </select>
+                            </div>
+                            <p class="follow_up_error error"></p>
+                        </div>
+
+                    </div>
+
+                    <!-- additional requirements -->
+                    <div class="row">
+
+                    </div>
+
+                    <div class="row">
+                        <div class="d-grid">
+                            <button type="button" id="submit_prescription_btn"
+                                class="btn btn-primary text-center justify-content-center">Create Prescription</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+            <!-- .row // -->
+        </div>
+        <!-- card body .// -->
+    </div>
+    <!-- card .// -->
+</section>
+
+
+<!-- calling -->
+<div id="callPopup__wrapper" class="position-fixed justify-content-center start-0 top-0"
+    style="background-color: rgba(0, 0, 0, 0.3); z-index: 100; width: 100%; height: 100vh; display: none;">
+    <audio id="calling_bg_audio" loop>
+        <source src="{%static 'media/ringtone.mp3'%}" type="audio/mp3">
+    </audio>
+
+
+    <div class="call-screen">
+        <div class="call-header">
+            <div class="caller-id">
+                <h5>Calling <span>.</span><span>.</span><span>.</span></h5>
+            </div>
+
+        </div>
+        <div class="call-body">
+            <div class="caller-img">
+                <img src="{% static 'assets/imgs/icons/man.png' %}" alt="avatar">
+            </div>
+
+        </div>
+
+        <div class="caller-details">
+            <h3 id="callPopup_patient_id" class="mt-2 mb-1"></h3>
+            <small id="callPopup_pharmacy_id" class="mb-3 d-block" style="margin-top: -7px; font-size: 12px;"></small>
+        </div>
+
+        <div class="caller-control d-flex gap-5">
+            <button id="callPopupAccept" type="button"
+                class="border-0 bg-success text-white px-3 rounded-circle py-2 d-flex align-items-center justify-content-center"
+                style="width: 40px; height: 40px;">
+                <i class="icon material-icons md-call"></i></button>
+            <button id="callPopupReject" type="button"
+                class="border-0 bg-danger text-white px-3 rounded-circle py-2 d-flex justify-content-center align-items-center"
+                style="width: 40px; height: 40px;" data-bs-ddelay="1000" data-bs-dismiss="toast" aria-label="Close"><i
+                    class="icon material-icons md-call_end"></i></button></button>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="viewReportModal" tabindex="-1" aria-labelledby="viewReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <img src="{% static 'assets/imgs/fimages/services.png' %}" alt="">
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="viewReportModal2" tabindex="-1" aria-labelledby="viewReportModal2Label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <embed src="{% static 'assets/test.pdf' %}" width="500px" height="500px" />
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="rejectionModal" tabindex="-1" aria-labelledby="rejectionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectionModalLabel">Reject Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="rejectionForm" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="rejection_reason">Rejection Reason</label>
+                        <textarea id="rejection_reason" name="rejection_reason" class="form-control" rows="3"
+                            required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_javascript %}
+
+<script src="{%static 'assets/js/AgoraRTC_N-4.22.0.js' %}"></script>
+<script src="{%static 'assets/js/create-prescription.js' %}"></script>
+<script src="{% static 'assets/js/vendors/jui/jquery-ui.min.js'%}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    // background red for schedule call
+    function notifySchedule() {
+        const scheduleWrapperInner = document.getElementById("scheduled_patients_wrapper_id").innerText;
+        const contentMain = document.querySelector('.content-main');
+        if (scheduleWrapperInner) {
+            contentMain.style.backgroundColor = "rgba(59, 183, 126, 0.2)";
+        } else {
+            contentMain.style.backgroundColor = "transparent";
+        }
+    }
+    notifySchedule();
+
+    var doctorId = "{{ request.user.id }}";
+    console.log(doctorId)
+    var socket = new WebSocket('ws://localhost:8000/ws/doctor-calls/' + doctorId + '/');
+    console.log(doctorId)
+    // document.getElementById("callPopup__wrapper").style.display = "none";
+
+    socket.onerror = function (error) {
+        console.log("WebSocket error:", error);
+    };
+
+    socket.onmessage = function (event) {
+        console.log("Message received:", event.data);
+        const resData = JSON.parse(event.data);
+
+        if (resData?.data?.new_status === "in_progress") {
+            const acceptedItem = document.querySelector(`li[data-callingId="${resData.data.call_id}"]`);
+            acceptedItem.style.opacity = '0.2';
+            acceptedItem.querySelector('button').disabled = true;
+        }
+        if (resData?.data?.new_status === "ended") {
+            const acceptedItem = document.querySelector(`li[data-callingId="${resData.data.call_id}"]`);
+            acceptedItem.remove()
+
+        }
+
+        if (resData.data?.call_type === "scheduled") {
+            const audio = document.getElementById("notify_bg_audio");
+            audio.play();
+            console.log(audio);
+            document.getElementById("scheduled_patients_wrapper_id").innerHTML += `<li data-callingId="${resData.data.id}" class="py-2 d-flex justify-content-between me-3 shadow-sm px-2 mb-2 bg-white">
+                        <span>${resData.data?.ppno}</span> <button data-ph-u="${resData.data.user}" data-call-id="${resData.data.id}" onclick='joinStream("${resData.data?.channel_name}", "${resData.data?.token}","${resData.data?.group}", "${resData.data?.user}", "${resData.data?.ppno}", "${resData.data?.id}")' type="button"
+                            class="border-0 bg-success rounded text-white pe-auto accept_call_button">Accept</button>
+                    </li>`;
+
+
+            notifySchedule();
+        }
+
+        if (resData.data?.call_type === "direct") {
+            const audio = document.getElementById("calling_bg_audio");
+
+            audio.play();
+            document.getElementById("callPopup__wrapper").style.display = "flex";
+
+            // popup data
+
+
+            if (resData.data.group === "pharmacy") {
+                document.getElementById("callPopup_patient_id").textContent = `${resData.data.ppno}`;
+                document.getElementById("callPopup_pharmacy_id").textContent = `Pharmacy: ${resData.data.user}`;
+            } else {
+                document.getElementById("callPopup_patient_id").textContent = `${resData.data.user}`;
+            }
+
+            document.getElementById("callPopupAccept").addEventListener("click", () => {
+                document.getElementById("callPopup__wrapper").style.display = "none";
+                audio.pause();
+                audio.currentTime = 0;
+
+                fetch("/add_doctor_call/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        "call_record_id": resData.data.id
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.doctor_call_serve_id) {
+                            console.log("Doctor call serve created:", data.doctor_call_serve_id);
+                        } else {
+                            console.error("Error:", data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Request failed:", error);
+                    });
+
+                // Continue with the video call logic
+                joinStream(resData.data.channel_name, resData.data.token, resData.data.group, resData.data.user, resData.data.ppno, resData.data.id);
+            });
+
+
+
+            document.getElementById("callPopupReject").addEventListener("click", () => {
+                console.log("hitted")
+                document.getElementById("callPopup__wrapper").style.display = "none";
+                const audio = document.getElementById("calling_bg_audio");
+                audio.pause();
+                audio.currentTime = 0;
+            });
+
+        }
+
+    };
+
+    socket.onopen = function () {
+        console.log("WebSocket connection opened, create");
+    };
+
+    socket.onclose = function () {
+        console.log("WebSocket connection closed");
+    };
+
+    socket.onerror = function (error) {
+        console.error("WebSocket error:", error);
+    };
+
+</script>
+<script>
+
+    var bodyElement = document.querySelector('body');
+    bodyElement.classList.add('aside-mini');
+
+
+    $(function () {
+        var selectedTests = [];
+        // Autocomplete for medicine_search input
+        $("#med_search").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "{% url 'autocomplete_medicines' %}",
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                $("#med_search").val(ui.item.value);
+                $("#med_full_name").val(ui.item.label);
+                $("#med_name").val(ui.item.name);
+                $("#med_strength").val(ui.item.strength);
+                $("#med_dosage_form").val(ui.item.dosage_form);
+                return false;
+            }
+        });
+
+        $("#add_medicine_form_submit_btn").click(function () {
+            var fullName = $("#med_full_name").val();
+            $("#med_search").val(fullName);
+        });
+
+
+        $("#instruction").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "{% url 'autocomplete_condition_instruction' %}",
+                    dataType: "json",
+                    data: {
+                        term: request.term  // Pass the search term
+                    },
+                    success: function (data) {
+                        response(data);  // Provide the results
+                    }
+                });
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                $("#instruction").val(ui.item.value);  // Set the input value to the selected item
+                return false;
+            }
+        });
+
+
+        // Autocomplete for test_search input
+        $("#test_search").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "{% url 'autocomplete_tests' %}",
+                    dataType: "json",
+                    data: {
+                        query: request.term // Changed 'term' to 'query'
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 1,
+            select: function (event, ui) {
+                if (!selectedTests.includes(ui.item.value)) {
+                    selectedTests.push(ui.item.value);
+                    updateAddedTestsContainer();
+                }
+                $("#test_search").val(''); // Clear the input after selection
+                return false; // Prevent default behavior
+            }
+        });
+
+
+        // Function to update the added tests container
+        function updateAddedTestsContainer() {
+            var container = $("#added_tests_container");
+            container.empty();
+
+            selectedTests.forEach(function (test) {
+                var testElement = $("<span>").addClass("badge bg-primary m-1").text(test);
+                var removeBtn = $("<button>").attr("type", "button").addClass("btn-close btn-close-white ms-2").attr("aria-label", "Close");
+
+                removeBtn.click(function () {
+                    selectedTests = selectedTests.filter(function (item) {
+                        return item !== test;
+                    });
+                    updateAddedTestsContainer();
+                });
+
+                testElement.append(removeBtn);
+                container.append(testElement);
+            });
+
+            $("#selected_tests").val(selectedTests.join(','));
+        }
+
+
+    });
+
+</script>
+
+<script>
+    // function getCSRFToken() {
+    //     return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    // }
+
+    $(document).ready(function () {
+        // Use event delegation to bind the click event for dynamically added buttons
+        $(document).on('click', '.accept_call_button', function () {
+            let phoneNumber = $(this).data('ph-u');
+            let voiceCallId = $(this).data('call-id');
+
+            if (!phoneNumber) {
+                alert('Phone number not available!');
+                return;
+            }
+            if (!voiceCallId) {
+                alert('Voice ID not available!');
+                return;
+            }
+
+            // Perform AJAX request to call_back view
+            $.ajax({
+                url: '{% url "call_back" %}',  // Ensure this matches your Django URL name
+                type: 'POST',
+                data: {
+                    phone_number: phoneNumber,
+                    voiceCallId: voiceCallId,
+                    // csrfmiddlewaretoken: getCSRFToken()  // Include CSRF token
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert('Push notification sent successfully!');
+                    } else {
+                        alert('Failed to send push notification: ' + response.error);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occurred: ' + error);
+                }
+            });
+        });
+    });
+</script>
+
+
+<script>
+    document.getElementById('advice').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Prevents the default new line behavior
+            insertBulletPoint(this);
+        }
+    });
+
+    function insertBulletPoint(textarea) {
+        const cursorPos = textarea.selectionStart;
+        const textBefore = textarea.value.substring(0, cursorPos);
+        const textAfter = textarea.value.substring(cursorPos);
+
+        // Insert bullet point and newline
+        const bullet = '\n• ';
+        textarea.value = textBefore + bullet + textAfter;
+
+        // Move cursor to the correct position after the bullet point
+        textarea.selectionStart = textarea.selectionEnd = cursorPos + bullet.length;
+    }
+</script>
+
+<!-- <script>
+
+    $('.reject_call_button').on('click', function () {
+        let voiceCallId = $(this).data('voicecallid');  // Correctly retrieving the voiceCallId
+        $('#rejectionForm').data('voicecallid', voiceCallId);  // Store it in the modal form for later use
+    });
+
+    $('#rejectionForm').on('submit', function (e) {
+        e.preventDefault();
+        let voiceCallId = $(this).data('voicecallid');  // Retrieve the stored voiceCallId
+        let rejectionReason = $('#rejection_reason').val();  // Get rejection reason from the modal textarea
+
+        if (!voiceCallId || !rejectionReason) {
+            alert('voiceCallId and rejection reason are required.');
+            return;
+        }
+
+        $.ajax({
+            url: "{% url 'rejected_prescription' %}",
+            method: 'POST',
+            data: {
+                voiceCallId: voiceCallId,
+                rejection_reason: rejectionReason,
+                csrfmiddlewaretoken: "{{ csrf_token }}"  // Pass CSRF token
+            },
+            success: function (response) {
+                if (response.success) {
+                    alert('Rejected reason updated successfully.');
+                    $('#rejectionModal').modal('hide');  // Close modal on success
+                } else {
+                    alert(response.message || 'Failed to update rejected reason.');
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('An error occurred: ' + error);
+            }
+        });
+    });
+
+
+</script> -->
+
+{% endblock extra_javascript %}

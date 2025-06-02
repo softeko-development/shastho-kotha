@@ -1,0 +1,338 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>স্বাস্থ্যকথা</title>
+   <meta name="description" content="স্বাস্থ্যকথা - Free Telemedicine App">
+   <link rel="icon" href="{% static 'assets/imgs/fimages/icon-transparent.png' %}">
+
+   <link rel="stylesheet" href="{% static 'assets/css/fcss/style.css' %}">
+
+   <script src="https://cdn.tailwindcss.com"></script>
+
+   <script>
+      tailwind.config = {
+        theme: {
+         container: {
+            center: true,
+         },
+          extend: {
+            colors: {
+              primary: '#78c119',
+              secondary: "#1b6f32",
+              tertiary: "#5ba721",
+              white: "#fbfdfb"
+            }
+          },
+        }
+      }
+    </script>
+</head>
+<body>
+   <header>
+      <div class="left-nav">
+         <img src="{% static 'assets/imgs/fimages/logo.png' %}" alt="Your Logo">
+      </div>
+      <div class="right-nav">
+         <nav class="menu">
+            <ul>
+               <li><a href="{% url 'home_page' %}" class="active">Home</a></li>
+               <li><a href="#services">Our Services</a></li>
+               <li><a href="#contact-us">Contact Us</a></li>
+               <li><a href="{% url 'login_page' %}">Login</a></li>
+            </ul>
+         </nav>
+         <div class="download-btn"><a href="#">Download App</a></div>
+      </div>
+  </header>
+
+  <div class="container p-4 text-lg text-secondary space-y-3">
+   <h2 class="text-4xl font-bold text-tertiary my-6">
+     Privacy Policy for Shastokotha
+   </h2>
+
+   <h4 class="text-2xl py-2 text-bold">Welcome to Shastokotha</h4>
+   <p class="">
+     At
+     <a href="www.shastokotha.com" class="font-bold">Shastokotha </a> ("we,"
+     "us," "our"), we are committed to protecting the privacy and personal
+     information of our users ("you," "your"). This Privacy Policy outlines
+     how we collect, use, and safeguard your personal information when you
+     visit or interact with
+     <a href="www.shastokotha.com" class="text-tertiary underline"
+       >our website</a
+     >.
+   </p>
+   <p class="">
+     By accessing or using the Shastokotha website, you agree to the terms
+     outlined in this Privacy Policy. If you do not agree with this policy,
+     please discontinue using the Website.
+   </p>
+
+   <h3 class="text-2xl font-bold">1. Information We Collect</h3>
+   <p>
+     We collect both personal and non-personal information to improve our
+     services and provide you with a seamless experience. The information we
+     collect includes:
+   </p>
+   <p class="font-bold">a. Personal Information</p>
+   <p>
+     When you use our services, you may voluntarily provide personal
+     information such as:
+   </p>
+   <p class="ml-4">• Name</p>
+   <p class="ml-4">• Email Address</p>
+   <p class="ml-4">• Phone Number</p>
+   <p class="ml-4">
+     • Any information submitted via contact forms or sign-ups
+   </p>
+
+   <p class="font-bold">b. Non-Personal Information</p>
+   <p>
+     We may automatically collect certain non-personal information when you
+     interact with the Website, including:
+   </p>
+   <p class="ml-4 space-y-2">• Browser Type</p>
+   <p class="ml-4 space-y-2">• Device Information</p>
+   <p class="ml-4 space-y-2">• IP Address</p>
+   <p class="ml-4 space-y-2">
+     • Pages visited and the time spent on the Website
+   </p>
+   <p class="ml-4 space-y-2">• Cookies and other tracking technologies</p>
+
+   <h3 class="text-2xl font-bold">2. How We Use Your Information</h3>
+   <p>The information we collect is used for the following purposes:</p>
+   <p class="ml-4 space-y-2">To provide and improve our services</p>
+   <p class="ml-4 space-y-2">To respond to your inquiries and requests</p>
+   <p class="ml-4 space-y-2">
+     To personalize your experience on the Website
+   </p>
+   <p class="ml-4 space-y-2">
+     To analyze how users interact with the Website and improve user
+     experience
+   </p>
+   <p class="ml-4 space-y-2">
+     To send you updates, newsletters, or other information (if you have
+     opted in)
+   </p>
+   <p class="ml-4 space-y-2">
+     To protect against misuse of the Website and ensure its security
+   </p>
+
+   <h3 class="text-2xl font-bold">3. Sharing of Information</h3>
+   <p>
+     We do not sell, rent, or trade your personal information. However, we
+     may share your information with third parties in the following
+     instances:
+   </p>
+   <p class="ml-4 space-y-2">
+     • <span class="font-bold">Service-providers: </span>
+     We may share your information with trusted third-party service providers
+     who assist us in operating the Website and delivering services.
+   </p>
+   <p class="ml-4 space-y-2">
+     • <span class="font-bold">Legal Requirements: </span>
+     We may disclose your personal information when required by law or to
+     protect the rights, property, or safety of Shastokotha, our users, or
+     others.
+   </p>
+   <p class="ml-4 space-y-2">
+     • <span class="font-bold">Business Transfers: </span> If Shastokotha is
+     involved in a merger, acquisition, or sale of assets, your information
+     may be transferred as part of that transaction.
+   </p>
+
+   <h3 class="text-2xl font-bold">4. Cookies and Tracking Technologies</h3>
+   <p>
+     We use cookies and similar technologies to enhance your experience on
+     the Website. Cookies are small files stored on your device that help us
+     understand how users interact with our content. You can control the use
+     of cookies through your browser settings, though disabling cookies may
+     affect the functionality of the Website.
+   </p>
+
+   <h3 class="text-2xl font-bold">5. Security of Your Information</h3>
+   <p>
+     We take appropriate security measures to protect your personal
+     information from unauthorized access, alteration, or destruction.
+     However, no method of data transmission over the Internet or electronic
+     storage is 100% secure. While we strive to protect your personal
+     information, we cannot guarantee its absolute security.
+   </p>
+
+   <h3 class="text-2xl font-bold">6. Your Privacy Rights</h3>
+   <p>
+     You have certain rights regarding your personal information, including:
+   </p>
+   <p class="ml-4 space-y-2">
+     • <span class="font-bold">Access: </span> You may request access to the
+     personal information we hold about you.
+   </p>
+   <p class="ml-4 space-y-2">
+     • <span class="font-bold">Correction: </span> You may request
+     corrections to inaccurate or incomplete information.
+   </p>
+   <p class="ml-4 space-y-2">
+     • <span class="font-bold">Deletion: </span> You may request the deletion
+     of your personal information.
+   </p>
+   <p class="ml-4 space-y-2">
+     • <span class="font-bold">Opt-Out: </span>You can opt-out of receiving
+     communications from us at any time by following the instructions in our
+     emails or by contacting us directly.
+   </p>
+
+   <h3 class="text-2xl font-bold">7. Third-Party Links</h3>
+   <p>
+     Our Website may contain links to third-party websites. Please note that
+     we are not responsible for the privacy practices of these external
+     sites. We encourage you to read the privacy policies of any linked
+     websites.
+   </p>
+
+   <h3 class="text-2xl font-bold">8. Children’s Privacy</h3>
+   <p>
+     Shastokotha is not directed toward individuals under the age of 13, and
+     we do not knowingly collect personal information from children. If we
+     discover that we have inadvertently collected personal information from
+     a child under 13, we will take steps to delete that information.
+   </p>
+
+   <h3 class="text-2xl font-bold">9. Changes to this Privacy Policy</h3>
+   <p>
+     We may update this Privacy Policy from time to time. Any changes will be
+     posted on this page, with the updated policy taking effect upon posting.
+     We encourage you to review this policy periodically to stay informed of
+     any updates.
+   </p>
+
+   <h3 class="text-2xl font-bold">10. Contact Us</h3>
+   <p>
+     If you have any questions or concerns regarding this Privacy Policy or
+     your data, feel free to contact us at:
+   </p>
+   <p class="ml-4 space-y-2 font-bold">• Email: support@shastokotha.com</p>
+   <p class="ml-4 space-y-2 font-bold">• Phone: +880 1812-266155</p>
+   <p class="ml-4 space-y-2 font-bold">
+     • Address: Northern Khan Heights House # 34, (Lift#11) Block # D, Mirpur
+     -11, Rd No 3, Dhaka 1216, Dhaka, Bangladesh.
+   </p>
+
+   <p>
+     By using the Shastokotha Website and App, you agree to the terms of this
+     Privacy Policy.
+   </p>
+ </div>
+
+   <div class="footer-area bg-gradient-to-r from-secondary to-primary relative mt-32 md:mt-48">
+      <div class="w-3/4 flex m-auto justify-center items-center gap-4 border-2 rounded-xl border-primary font-semibold bg-white absolute -top-16 md:-top-20 left-0 right-0 m-auto">
+         <img src="{% static 'assets/imgs/fimages/QR-code.png' %}" alt="" class="w-24 sm:w-28 md:w-40 h-24 sm:h-28 md:h-40">
+         <div>
+            <h4 class="text-xl md:text-2xl text-primary">ডাউনলোড করতে</h4>
+            <h4 class="text-2xl md:text-4xl text-primary">স্কান করুন এখনি</h4>
+         </div>
+      </div>
+
+      <div class="space-y-8 md:space-y-0 md:grid md:grid-cols-3 gap-4 pt-28 md:pt-36 px-4 sm:px-6 md:px-16 text-white">
+         <div class="space-y-4">
+            <img src="{% static 'assets/imgs/fimages/logo-white.png' %}" alt="logo" class="w-10/12 bg-transparent">
+            <h4 class="">স্বাস্থ্যকথা একটি পূর্ণাঙ্গ টেলিমেডিসিন মোবাইল আপ্লিকেশন। স্বাস্থ্যকথা অ্যাপ ব্যবহার করে দেশব্যাপী বিনামূল্যে স্বাস্থ্য সেবা নিশ্চিতকরনের উদ্দেশে আমাদের পথচলা।</h4>
+            <div class="flex items-center gap-4">
+               <img src="{% static 'assets/imgs/fimages/fb-icon.png' %}" alt="" class="w-7 h-7">
+               <img src="{% static 'assets/imgs/fimages/linkedin-icon.png' %}" alt="" class="w-7 h-7">
+               <img src="{% static 'assets/imgs/fimages/insta-icon.png' %}" alt="" class="w-7 h-7">
+               <img src="{% static 'assets/imgs/fimages/youtube-icon.png' %}" alt="" class="w-9 h-6">
+            </div>
+         </div>
+
+         <div class="space-y-2">
+            <h4 class="text-xl font-semibold mb-2">Services</h4>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/arrow-icon.png' %}" alt="" class="w-2 h-3">
+               <h5 class="">অ্যাপ ডাউনলোড করুন</h5>
+            </div>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/arrow-icon.png' %}" alt="" class="w-2 h-3">
+               <h5 class="">ফ্রীলান্স হাব (বিডি) ওয়েবসাইট</h5>
+            </div>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/arrow-icon.png' %}" alt="" class="w-2 h-3">
+               <h5 class="">অ্যাপ ব্যবহারের নিয়ম</h5>
+            </div>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/arrow-icon.png' %}" alt="" class="w-2 h-3">
+               <h5 class="">ফার্মেসি এন্রলমেন্ট করুন</h5>
+            </div>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/arrow-icon.png' %}" alt="" class="w-2 h-3">
+               <h5 class="">ডাক্তার লিস্ট</h5>
+            </div>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/arrow-icon.png' %}" alt="" class="w-2 h-3">
+               <h5 class="">আমাদের পার্টনার ফার্মেসি</h5>
+            </div>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/arrow-icon.png' %}" alt="" class="w-2 h-3">
+               <h5 class="">শর্তাবলী</h5>
+            </div>
+            <div class="flex items-center gap-2">
+               <a href="{% url 'privacy_policy' %}"><img src="{% static 'assets/imgs/fimages/arrow-icon.png' %}" alt="" class="w-2 h-3"></a>
+               <a href="{% url 'privacy_policy' %}"<h5 class="">গোপনীয়তা নীতি</h5></a>
+            </div>
+            <div class="flex items-center gap-2">
+               <a href="{% url 'delete_account' %}"><img src="{% static 'assets/imgs/fimages/arrow-icon.png' %}" alt="" class="w-2 h-3"></a>
+               <a href="{% url 'delete_account' %}"<h5 class="">একাউন্ট বন্ধ করুন</h5></a>
+            </div>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/arrow-icon.png' %}" alt="" class="w-2 h-3">
+               <h5 class="">ডেটা সংরক্ষণ নীতি</h5>
+            </div>
+         </div>
+
+         <div class="space-y-2">
+            <h4 class="text-xl font-semibold mb-2">Get In Touch</h4>
+            <div class="flex  gap-2">
+               <img src="{% static 'assets/imgs/fimages/location-icon.png' %}" alt="" class="w-4 h-5 mt-1">
+               <h5 class="">Northern Khan Heights House # 34, (Lift#11) Block # D, Mirpur -11, Rd No 3, Dhaka 1216, Dhaka, Bangladesh.</h5>
+            </div>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/mail-icon.png' %}" alt="" class="w-4 h-3">
+               <h5 class="">info@shastokotha.com</h5>
+            </div>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/phone.png' %}" alt="" class="w-4 h-4">
+               <h5 class="">+880 1826-322233</h5>
+            </div>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/phone.png' %}" alt="" class="w-4 h-4">
+               <h5 class="">+880 1812-266155</h5>
+            </div>
+            <div class="flex items-center gap-2">
+               <img src="{% static 'assets/imgs/fimages/watch-icon.png' %}" alt="" class="w-4 h-4">
+               <h5 class="">24 Hr / 365 Days</h5>
+            </div>
+         </div>
+       </div>
+
+       <div class="w-full py-8 px-4 sm:px-6 md:px-16"><h3 class="rounded-lg border text-center p-3 text-white bg-[#e6e6e640]">@2024 - All rights are Reserved by freelance Hub (Bd) Limited</h3></div>
+
+   </div>
+
+   <script>
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const targetId = this.getAttribute('href').substring(1);
+    const targetElement = document.getElementById(targetId);
+
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+   </script>
+</body>
+</html>

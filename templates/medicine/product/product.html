@@ -1,0 +1,237 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block head_title%}
+<title>{{heading}} | TelMed</title>
+{% endblock %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">{{heading}} List</h2>
+            
+        </div>
+        <div>
+            <a href="#" class="btn btn-light rounded font-md">Export</a>
+            <a href="#" class="btn btn-light rounded font-md" data-bs-toggle="modal" data-bs-target="#modalCenter">Import</a>
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewProductModal"
+                class="btn btn-primary btn-sm rounded">Create new</a>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <input type="text" placeholder="Search..." class="form-control" />
+                </div>
+                <!-- <div class="col-lg-2 col-md-3 col-6">
+                    <select class="form-select">
+                        <option>Status</option>
+                        <option>Active</option>
+                        <option>Disabled</option>
+                        <option>Show all</option>
+                    </select>
+                </div> -->
+                <div class="col-lg-2 col-md-3 col-6">
+                    <select class="form-select">
+                        <option>Show 20</option>
+                        <option>Show 30</option>
+                        <option>Show 40</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+        <!-- card-header end// -->
+        <div class="card-body" id="product_container">
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Strength</th>
+                        <th scope="col">Category Name</th>
+                        <th scope="col">Company</th>
+                        <th scope="col">Generic</th>
+                        <th scope="col">Dosage</th>
+                        <th scope="col" class="text-center pl-50">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr>
+                        <td>${item.item_code}</td>
+                        <td>${item.name}</td>
+                        <td>${item.strength}</td>
+                        <td>${item.category__name}</td>
+                        <td>${item.pharmaceutical_com_id__name}</td>
+                        <td>${item.generics_id__name}</td>
+                        <td>${item.dosage_form_id__name}</td>
+                        <td class="text-end">
+                            <div class="d-flex gap-3 mr-10">
+                                <a data-bs-toggle="modal" data-bs-target="#viewProductModal" onclick="showEditModal(${item.id})" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i>
+                                    Edit </a>
+                                <a onclick="productDeleteHandler(${item.id})" class="btn btn-sm font-sm btn-light rounded"> <i
+                                        class="material-icons md-delete_forever"></i> Delete </a>
+                            </div>
+                        </td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
+        <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+    <!-- <div class="pagination-area mt-30 mb-50">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-start">
+                <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                <li class="page-item"><a class="page-link" href="#">02</a></li>
+                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                <li class="page-item"><a class="page-link" href="#">16</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div> -->
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="viewProductModal" tabindex="-1" aria-labelledby="viewProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewProductModalLabel">Add New Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="hideEditModal()"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-4">
+                    <label for="product_code" class="form-label">Product Code</label>
+                    <input type="text" placeholder="Product Code" class="form-control" id="product_code" />
+                    <p class="product_code_error error" style="color: red;"></p>
+                </div>
+                <div class="mb-4">
+                    <label for="product_name" class="form-label">Product Name</label>
+                    <input type="text" placeholder="Product Name" class="form-control" id="product_name" />
+                    <p class="product_name_error error" style="color: red;"></p>
+                </div>
+                <div class="mb-4">
+                    <label for="product_strength" class="form-label">Strength</label>
+                    <input type="text" placeholder="Strength" class="form-control" id="product_strength" />
+                    <p class="product_strength_error error" style="color: red;"></p>
+                </div>
+                <div class="mb-4">
+                    <label for="product_category" class="form-label">Product Category </label>
+                    <select id="product_category" class="form-select">
+                        <option selected value="0">Select Category</option>
+                        {% for item in productCategories %}
+                        <option value="{{ item.id }}">{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="product_category_error error" style="color: red;"></p>
+                </div>
+                <div class="mb-4">
+                    <label for="product_company" class="form-label">Company Name</label>
+                    <select id="product_company" class="form-select">
+                        <option selected value="0">Select Company</option>
+                        {% for item in companies %}
+                        <option value="{{ item.id }}">{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="product_company_error error" style="color: red;"></p>
+                </div>
+                <div class="mb-4">
+                    <label for="product_generic" class="form-label">Generic</label>
+                    <select id="product_generic" class="form-select">
+                        <option selected value="0">Select Generic</option>
+                        {% for item in generics %}
+                        <option value="{{ item.id }}">{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="product_generic_error error" style="color: red;"></p>
+                </div>
+                <div class="mb-4">
+                    <label for="product_dosage" class="form-label">Dosage</label>
+                    <select id="product_dosage" class="form-select">
+                        <option selected value="0">Select Dosage</option>
+                        {% for item in dosages %}
+                        <option value="{{ item.id }}">{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="product_dosage_error error" style="color: red;"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    onclick="hideEditModal()">Close</button>
+                <button onclick="productSubmitHandler()" type="button" class="btn btn-primary"
+                    data-bs-dismiss="modal">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveProductToast" class="toast" data-bs-delay="1000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Update</strong>
+            <button type="button" class="btn-close" data-bs-ddelay="1000" data-bs-dismiss="toast"
+                aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Hello, world! This is a toast message.
+        </div>
+    </div>
+
+</div>
+
+<form method="post" action="{% url 'brand_name_import_data' %}" enctype="multipart/form-data" >
+    {% csrf_token %}
+    <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalCenterTitle">Bulk Product Create</h5>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <div class="row">
+                <div class="col mb-0">
+                <label  class="form-label">Submit File</label>
+                <input
+                    type="file" accept=".xls,.xlsx"
+                    class="form-control" name="file" required />
+                </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                Close
+            </button>
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_javascript %}
+
+<script src="{%static 'assets/js/vendors/chart.js'%}"></script>
+<script src="{%static 'assets/js/custom-chart.js'%}" type="text/javascript"></script>
+<script src="{%static 'assets/js/medicine/product.js'%}"></script>
+{% endblock extra_javascript %}

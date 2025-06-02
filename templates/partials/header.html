@@ -1,0 +1,100 @@
+{% load static %}
+{% block  header %}
+<header class="main-header navbar">
+    <div class="col-search">
+        <form class="searchform">
+            <div class="input-group">
+                <input list="search_terms" type="text" class="form-control" placeholder="Search term" />
+                <button class="btn btn-light bg" type="button"><i class="material-icons md-search"></i></button>
+            </div>
+            <datalist id="search_terms">
+                <option value="Products"></option>
+                <option value="New orders"></option>
+                <option value="Apple iphone"></option>
+                <option value="Ahmed Hassan"></option>
+            </datalist>
+        </form>
+    </div>
+    <div class="col-nav">
+        <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
+        <ul class="nav">
+
+            {% if user.is_authenticated %}
+                {% for group_for in request.user.groups.all %}
+                    {% if group_for.name == 'doctor' %}
+                        <li class="nav-item toggle_active position-relative">
+                            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                            <input class="input" type="checkbox" name="working_status" data-id="{{ user.id }}" id="dark-mode" {% if doctor_profile.working_status %}checked{% endif %} />
+
+                            <label for="dark-mode" class="label">
+                                <span class="circle"></span>
+                            </label>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <li class="nav-item">
+                <a class="nav-link btn-icon" href="#">
+                    <i class="material-icons md-notifications animation-shake"></i>
+                    <span class="badge rounded-pill">3</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+            </li>
+           
+            <li class="dropdown nav-item">
+                {% if user.is_authenticated %}
+                    
+                  {% if user.avatar %}
+                  <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="{{user.avatar.url}}" alt="User" /></a>
+                
+                  {% else %}
+
+                  {% if request.user.groups.count == 0 %}
+                        <!-- Default image for users with no group -->
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="{%static 'assets/imgs/people/admin_icon.png'%}" alt="User" /></a>
+                    {% else %}
+                        {% for group_for in request.user.groups.all %}
+                            {% if group_for.name == 'doctor' %}
+                                <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="{%static 'assets/imgs/people/doctor_icon.png'%}" alt="User" /></a>
+                            {% elif group_for.name == 'staff' %}
+                                <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="{%static 'assets/imgs/people/staff_icon.png'%}" alt="User" /></a>
+                            {% elif group_for.name == 'pharmacy' %}
+                                <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="{%static 'assets/imgs/people/pharmacy_icon.png'%}" alt="User" /></a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                  {% endif %}
+               {% endif %} 
+                
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                    {% if user.is_authenticated %}
+                            <span class=" text-primary ps-4 fw-bold d-block">{{user.name}}</span>
+                          
+                            {% for group_for in request.user.groups.all %}
+                              {% if group_for.name == 'doctor' %}
+                                  <p class="text-warning ps-4">Doctor</p>
+                              {% elif group_for.name == 'staff' %}
+                                  <p class="text-warning ps-4">Staff</p>
+                              {% elif group_for.name == 'pharmacy' %}
+                                  <p class="text-warning ps-4">Pharmacy</p>
+                              {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                    <a class="dropdown-item" href="{% url 'change_password' %}"><i class="material-icons md-settings"></i>Change Password</a>
+                    <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</header>
+{% endblock   %}

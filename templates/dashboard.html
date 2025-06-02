@@ -1,0 +1,356 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block head_title%}
+<title>{{heading}} | TelMed</title>
+{% endblock %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Dashboard</h2>
+            
+        </div>
+        <div>
+            <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Create report</a>
+        </div>
+    </div>
+    {% comment %} <div class="row">
+
+        <div class="col-lg-4">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-success-light"><i
+                            class="text-success material-icons md-local_hospital"></i></span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Pharmacy</h6>
+                        <span>1231</span>
+                        <span class="text-sm"> Excluding orders in transit </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-warning-light"><i
+                            class="text-secondary material-icons md-medical_services"></i></span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Doctor</h6>
+                        <span>10</span>
+                        <span class="text-sm"> In 19 Categories </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-info-light"><i
+                            class="text-info material-icons md-group"></i></span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Staff</h6>
+                        <span>5</span>
+                        <span class="text-sm"> Based in your local time. </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-8 col-lg-12">
+            <div class="card mb-4">
+                <article class="card-body">
+                    <h5 class="card-title">Sale statistics</h5>
+                    <canvas id="myChart" height="135px"></canvas>
+                </article>
+            </div>
+
+        </div>
+        <div class="col-xl-4 col-lg-12">
+            <div class="card mb-4">
+                <article class="card-body">
+                    <h5 class="card-title">New Pharmacy</h5>
+                    <div class="new-member-list">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="d-flex align-items-center">
+                                <img src="assets/imgs/people/avatar-4.png" alt="" class="avatar" />
+                                <div>
+                                    <h6>Adam-Eve Pharmacy</h6>
+                                    <p class="text-muted font-xs">Daudkandi, Cumilla.</p>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-xs">View</a>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="d-flex align-items-center">
+                                <img src="assets/imgs/people/avatar-2.png" alt="" class="avatar" />
+                                <div>
+                                    <h6>Lata-Pata Pharmacy</h6>
+                                    <p class="text-muted font-xs">Kuakata, Patuakhali.</p>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-xs">View</a>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="d-flex align-items-center">
+                                <img src="assets/imgs/people/avatar-3.png" alt="" class="avatar" />
+                                <div>
+                                    <h6>Demo Pharmacy Name</h6>
+                                    <p class="text-muted font-xs">Thana, District</p>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-xs">View</a>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="d-flex align-items-center">
+                                <img src="assets/imgs/people/avatar-3.png" alt="" class="avatar" />
+                                <div>
+                                    <h6>Demo Pharmacy Name</h6>
+                                    <p class="text-muted font-xs">Thana, District</p>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-xs">View</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-xl-8 col-lg-12">
+            <div class="card mb-4">
+                <article class="card-body">
+                    <h5 class="card-title">Revenue Base on Area</h5>
+                    <canvas id="myChart2" height="135"></canvas>
+                </article>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-12">
+            <div class="card mb-4">
+                <article class="card-body">
+                    <h5 class="card-title">Recent activities</h5>
+                    <ul class="verti-timeline list-unstyled font-sm">
+                        <li class="event-list">
+                            <div class="event-timeline-dot">
+                                <i class="material-icons md-play_circle_outline font-xxl"></i>
+                            </div>
+                            <div class="media">
+                                <div class="me-3">
+                                    <h6><span>9:50 AM</span> <i
+                                            class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i>
+                                    </h6>
+                                </div>
+                                <div class="media-body">
+                                    <div>017171548255 requested call to you.</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="event-list active">
+                            <div class="event-timeline-dot">
+                                <i class="material-icons md-play_circle_outline font-xxl animation-fade-right"></i>
+                            </div>
+                            <div class="media">
+                                <div class="me-3">
+                                    <h6><span>10:10 AM</span> <i
+                                            class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i>
+                                    </h6>
+                                </div>
+                                <div class="media-body">
+                                    <div>017171548255 requested call to you.</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="event-list">
+                            <div class="event-timeline-dot">
+                                <i class="material-icons md-play_circle_outline font-xxl"></i>
+                            </div>
+                            <div class="media">
+                                <div class="me-3">
+                                    <h6><span>10:20 AM</span> <i
+                                            class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i>
+                                    </h6>
+                                </div>
+                                <div class="media-body">
+                                    <div>017171548255 requested call to you.</div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="event-list">
+                            <div class="event-timeline-dot">
+                                <i class="material-icons md-play_circle_outline font-xxl"></i>
+                            </div>
+                            <div class="media">
+                                <div class="me-3">
+                                    <h6><span>9:50 AM</span> <i
+                                            class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i>
+                                    </h6>
+                                </div>
+                                <div class="media-body">
+                                    <div>017171548255 requested call to you.</div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        
+                        
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <header class="card-header">
+            <h4 class="card-title">Latest Prescriptions</h4>
+            <div class="row align-items-center">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <input type="text" placeholder="Search..." class="form-control" />
+                </div>
+                <!-- <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>Status</option>
+                        <option>Active</option>
+                        <option>Disabled</option>
+                        <option>Show all</option>
+                    </select>
+                </div> -->
+                <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>Show 20</option>
+                        <option>Show 30</option>
+                        <option>Show 40</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>SL No.</th>
+                            <th scope="col">Patient Number</th>
+                            <th scope="col" class="text-end pr-20">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>01</td>
+                            <td>01717585654</td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-md rounded font-sm" data-bs-toggle="modal" data-bs-target="#viewModal">
+                                    View
+                                </button>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>01</td>
+                            <td>01717585654</td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-md rounded font-sm" data-bs-toggle="modal" data-bs-target="#viewModal">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>01</td>
+                            <td>01717585654</td>
+                            <td class="text-end">
+                                <button type="button" class="btn btn-md rounded font-sm" data-bs-toggle="modal" data-bs-target="#viewModal">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- table-responsive end// -->
+        </div>
+    </div> {% endcomment %}
+    
+</section>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewModalLabel">Prescription of 01771758625</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p>Date: 24-07-2024</p>
+            <div class="doctor_details">
+                <h6 class="doctor_name">Dr. Koushik Rony</h6>
+                <p class="mb-0">BMDC Number: A-97049</p>
+                <p>MBBS</p>
+            </div>
+            <hr>
+            <div class="patient_details">
+                <h6 class="patient"><strong>Patient:</strong> <span class="patient_name">MD
+                        SHUVO</span></h6>
+                <ul class="d-flex gap-2">
+                    <li><b class="fw-bold">Gender:</b> Male</li>
+                    <li><b class="fw-bold">Age:</b> 27</li>
+                    <li><b class="fw-bold">Weight:</b> 78Kg</li>
+                </ul>
+
+            </div>
+            <hr>
+
+            <p><b class="fw-bold">Problem:</b> Abdominal Discomfort with nausea</p>
+            <p><b class="fw-bold">Advice:</b> Not Applicable</p>
+            <p><b class="fw-bold">Medicine:</b></p>
+            <ol class="list-group list-group-numbered mb-10">
+                <li class="list-group-item">
+                    Tablet: Amodis 400mg After Meal 1+1+1 5days
+                </li>
+                <li class="list-group-item">
+                    Tablet: Amodis 400mg After Meal 1+1+1 5days
+                </li>
+            </ol>
+            <p><b class="fw-bold">Investigation:</b> Not Applicable</p>
+            <p><b class="fw-bold">Additional Instruction:</b> </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_javascript %}
+<script>
+    var doctorId = "{{ request.user.id }}";  
+    var socket = new WebSocket('ws://localhost:8000/ws/doctor-calls/' + doctorId + '/');
+
+    socket.onmessage = function(event) {
+        console.log("Message received:", event.data);
+    };
+
+    socket.onopen = function() {
+        console.log("WebSocket connection opened");
+    };
+
+    socket.onclose = function() {
+        console.log("WebSocket connection closed");
+    };
+
+    socket.onerror = function(error) {
+        console.error("WebSocket error:", error);
+    };
+
+</script>
+<script src="{%static 'assets/js/vendors/chart.js'%}"></script>
+<script src="{%static 'assets/js/custom-chart.js'%}" type="text/javascript"></script>
+{% endblock extra_javascript %}

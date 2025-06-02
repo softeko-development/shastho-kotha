@@ -1,0 +1,164 @@
+body {
+   margin: 0;
+   padding: 0;
+   font-family: Arial, sans-serif;
+   background-color: #fbfdfb;
+}
+
+header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 10px 50px;
+}
+
+
+.left-nav img {
+   width: 260px;
+   height: auto;
+}
+
+.right-nav{
+   display: flex;
+   align-items: center;
+   gap: 60px;
+   font-size: 20px;
+   font-weight: 500;
+}
+
+.menu ul {
+   list-style: none;
+   margin: 0;
+   padding: 0;
+   display: flex;
+   gap: 25px;
+}
+
+.menu li a {
+   text-decoration: none;
+   color: #3a3a3a;
+   transition-duration: 200ms;
+}
+
+.menu li a:hover{
+   color: #5ba721;
+}
+
+a.active{
+   color: #5ba721!important;
+}
+
+.download-btn{
+background:  linear-gradient(to right, #1b6f32, #78c119);;
+padding: 15px 40px;
+border-radius: 6px;
+box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+transition-duration: 250ms;
+}
+
+.download-btn:hover{
+transform: translateY(-3px);
+}
+
+.download-btn a{
+   color: white;
+   text-decoration: none;
+}
+
+
+.banner-bg{
+   width: 100%;
+}
+
+.banner{
+   position: relative;
+}
+
+#banner-btn{
+   position: absolute;
+   top: 58%;
+   left: 70px;
+}
+
+#banner-btn a{
+   font-size: 24px;
+   font-weight: 600;
+}
+
+@media screen and (max-width: 768px) {
+   header {
+       flex-direction: column;
+       align-items: flex-start;
+      padding: 10px 20px;
+   }
+
+   .left-nav {
+      margin: auto;
+      margin-bottom: 8px;
+   }
+
+   .right-nav {
+      flex-direction: column;
+      margin: auto;
+      gap: 10px;
+   }
+
+   .menu li {
+       margin-bottom: 10px;
+   }
+
+   #banner-btn{
+      top: 56%;
+      left: 25px;
+      padding: 8px 16px;
+   }
+   
+   #banner-btn a{
+      font-size: 14px;
+      font-weight: 600;
+   }
+
+}
+
+@media screen and (max-width: 560px) {
+
+   .left-nav img {
+      width: 240px;
+   }
+
+   .menu ul {
+      gap: 15px;
+   }
+
+   .menu ul a{
+      font-size: 16px;
+   }
+   
+   .download-btn{
+   padding: 6px 22px;
+   }
+
+   .download-btn a{
+      font-size: 18px;
+   }
+   
+   #banner-btn{
+      left: 20px;
+      padding: 2px 10px;
+   }
+   #banner-btn a{
+      font-size: 10px;
+      line-height: 2px;
+   }
+
+}
+
+.footer-area{
+   border-radius: 50% 40% 0% 0% / 25% 25% 0% 0%;
+}
+
+@media screen and (max-width: 768px){
+   .footer-area{
+      border-radius: 50% 40% 0% 0% / 10% 10% 0% 0%;
+   }
+}

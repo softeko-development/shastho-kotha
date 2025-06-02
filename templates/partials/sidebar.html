@@ -1,0 +1,105 @@
+{% load static %}
+{% load template_tags %} 
+{% with request.resolver_match.url_name as path_name %} 
+{% block sidebar %}
+<aside class="navbar-aside" id="offcanvas_aside">
+    <div class="aside-top">
+        <a href="{% url 'dashboard' %}" class="brand-wrap">
+            <img src="{%static 'assets/imgs/theme/logo.png'%}" class="logo" alt="TelMed Dashboard" />
+        </a>
+        <div>
+            <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+        </div>
+    </div>
+    <nav>
+        <ul class="menu-aside">
+            <li class="menu-item {% if '/dashboard/' in request.path %}active{% endif %}">
+                <a class="menu-link" href="{% url 'dashboard' %}">
+                    <i class="icon material-icons md-home"></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+
+            {% if user|is_staff_or_in_group:"" or user|has_role:"Manager"  or user|has_role:"HR" %}
+            <li class="menu-item has-submenu {% if '/user/' in request.path %}active{% endif %}">
+                <a class="menu-link" href="#">
+                    <i class="icon material-icons md-person"></i>
+                    <span class="text">User</span>
+                </a>
+                <div class="submenu">
+                    <a class="{% if '/pharmacy_list/' in request.path %}active{% endif %}" href="{% url 'pharmacy_list' %}">Pharmacy</a>
+                    <a class="{% if '/doctor_list/' in request.path %}active{% endif %}" href="{% url 'doctor_list' %}">Doctor</a>
+                    <a class="{% if '/staff_list/' in request.path %}active{% endif %}" href="{% url 'staff_list' %}">Staff</a>
+                </div>
+            </li>
+            
+            <li class="menu-item has-submenu {% if '/medicine/' in request.path %}active{% endif %}">
+                <a class="menu-link" href="#">
+                    <i class="icon material-icons md-add_box"></i>
+                    <span class="text">Medicine</span>
+                </a>
+                <div class="submenu">
+                    <a class="{% if '/product/' in request.path %}active{% endif %}"
+                        href="{% url 'product' %}">Product</a>
+                    {% comment %} <a class="{% if '/generics/' in request.path %}active{% endif %}"
+                        href="{% url 'generics' %}">Generics</a> {% endcomment %}
+                    <a class="{% if '/menufacturer/' in request.path %}active{% endif %}"
+                        href="{% url 'menufacturer' %}">Manufacturer</a>
+                    <a class="{% if '/dosage_form/' in request.path %}active{% endif %}"
+                        href="{% url 'dosage_form' %}">Dosage Form</a>
+                    <a class="{% if '/category/' in request.path %}active{% endif %}"
+                        href="{% url 'category' %}">Medicine Category</a>
+                    <a class="{% if '/test_category/' in request.path %}active{% endif %}"
+                        href="{% url 'test_category' %}">Test Category</a>
+                    <a class="{% if '/test_name/' in request.path %}active{% endif %}" href="{% url 'test_name' %}">Test
+                        Names</a>
+                </div>
+            </li>
+            {% endif %}
+
+            {% if user|is_staff_or_in_group:"doctor" or user|has_role:"Manager"  or user|has_role:"HR" %}
+            <li class="menu-item has-submenu {% if '/prescription/' in request.path %}active{% endif %}">
+                <a class="menu-link">
+                    <i class="icon material-icons md-description"></i>
+                    <span class="text">Prescriptions</span>
+                </a>
+                <div class="submenu" style="display: none;">
+                    <a class="{% if '/patients_list/' in request.path %}active{% endif %}" href="{% url 'patients_list' %}">Create Prescription</a>
+                    <a class="{% if '/view_prescription/' in request.path %}active{% endif %}" href="{% url 'view_prescription' %}">View Prescription</a>
+                    <a target="_blank" class="{% if '/add_instruction/' in request.path %}active{% endif %}"
+                    href="{% url 'add_instruction' %}">Add Instruction</a>
+                </div>
+            </li>
+            {% endif %}
+            {% if user|is_staff_or_in_group:"doctor, pharmacy" or user|has_role:"Manager"  or user|has_role:"HR" or user|has_role:"Accountant" %}
+            <li class="menu-item">
+                <a class="menu-link"  href="#">
+                    <i class="icon material-icons md-pie_chart"></i>
+                    <span class="text">Statistics</span>
+                </a>
+            </li>
+            {% endif %}
+           
+        </ul>
+        <hr />
+        {% if user|is_staff_or_in_group:"" or user|has_role:"Manager"  or user|has_role:"HR" or user|has_role:"Accountant" %}
+        <ul class="menu-aside" style=>
+            <li class="menu-item has-submenu {% if '/setting/' in request.path %}active{% endif %}">
+                <a class="menu-link" href="#">
+                    <i class="icon material-icons md-settings"></i>
+                    <span class="text">Settings</span>
+                </a>
+                <div class="submenu">
+                    <a class="{% if '/profile_settings/' in request.path %}active{% endif %}" href="{% url 'profile_settings' %}">Profile Setting</a>
+                    <a class="{% if '/site_settings/' in request.path %}active{% endif %}" href="{% url 'site_settings' %}">Basic Settings</a>
+                   
+                </div>
+            </li>
+        </ul>
+        {% endif %}
+        <br />
+        <br />
+    </nav>
+</aside>
+{% endblock sidebar %}
+{% endwith %}

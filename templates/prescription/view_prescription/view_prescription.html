@@ -1,0 +1,145 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block head_title%}
+<title>{{heading}} | TelMed</title>
+<link href="{% static 'assets/css/create-prescription.css'%}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block content %}
+
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">{{ heading }}</h2>
+            
+        </div>
+        <div>
+            <input type="text" placeholder="Search Patient Number" class="form-control bg-white" />
+        </div>
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <input type="text" placeholder="Search..." class="form-control" />
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>Status</option>
+                        <option>Active</option>
+                        <option>Disabled</option>
+                        <option>Show all</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>Show 20</option>
+                        <option>Show 30</option>
+                        <option>Show 40</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+        <!-- card-header end// -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>SL No.</th>
+                            <th scope="col">User</th>
+                            <th scope="col">Patient Number</th>
+                            <th scope="col">Created At</th>
+                            <th scope="col">Updated At </th>
+                            <th scope="col" class="text-center pr-30">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for doctorPres in  doctorPrescripList %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{% if 'doctorPres.call_record.pharmacy_id' %} {{doctorPres.call_record.pharmacy_id.name}} {% else %} {{doctorPres.call_record.patient_id.name}} {% endif %}</td>
+                                <td>{% if 'doctorPres.call_record.pharmacy_id' %} {{doctorPres.call_record.ppno}} {% else %} {{doctorPres.call_record.patient_id.phone_number}} {% endif %}</td>
+                                <td>{{doctorPres.created_at}}</td>
+                                <td>{{doctorPres.updated_at}}</td>
+                                <td class="text-center ">
+                                    <div class="d-flex gap-2" >
+                                        <!-- <button type="button" class="btn btn-md rounded font-sm" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#viewModal" 
+                                        data-prescription-id="{{ doctorPres.id }}">
+                                            View
+                                        </button> -->
+                                        <a target="_blank" href="{% url 'download_prescription' prescription_id=doctorPres.id %}" class="btn btn-primary">View</a>
+                                        <a  href="{% url 'download_prescription' prescription_id=doctorPres.id %}" class="btn btn-primary">Download Prescription</a>
+
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- table-responsive //end -->
+        </div>
+        <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+    <div class="pagination-area mt-15 mb-50">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-start">
+                <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                <li class="page-item"><a class="page-link" href="#">02</a></li>
+                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                <li class="page-item"><a class="page-link" href="#">16</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+
+
+<!-- Modal -->
+<!-- <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+           
+            <embed id="prescriptionEmbed" type="application/pdf" width="100%" height="500px" />
+        </div>
+    </div>
+</div> -->
+
+{% endblock %}
+
+{% block extra_javascript %}
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const viewModal = document.getElementById('viewModal');
+        const prescriptionEmbed = document.getElementById('prescriptionEmbed');
+
+        viewModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget; // Button that triggered the modal
+            const prescriptionId = button.getAttribute('data-prescription-id'); // Extract info from data-prescription-id
+            
+            if (prescriptionId) {
+                // Dynamically set the src of the embed tag to the prescription PDF URL
+                prescriptionEmbed.src = `{% url 'download_prescription' prescription_id=0 %}`.replace('0', prescriptionId);
+            }
+        });
+
+        // Optionally, clear the src when the modal is hidden
+        viewModal.addEventListener('hidden.bs.modal', function () {
+            prescriptionEmbed.src = '';
+        });
+    });
+</script> -->
+{% endblock extra_javascript %}
